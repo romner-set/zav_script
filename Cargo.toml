@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 headless_chrome = "*"
 sysinputs = "*"
+
+[build-dependencies]
+winres = "*"
