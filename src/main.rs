@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             None => None,
         }).build()?
     )?;
-    let tab = browser.wait_for_initial_tab()?;
+    let tab = *browser.wait_for_initial_tab()?;
     tab.set_default_timeout(Duration::MAX);
 
     println!("Opened, navigating to {}", LOGIN);
