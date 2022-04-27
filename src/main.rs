@@ -65,7 +65,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
                         thread::sleep(Duration::from_millis(50));
                     }
                 }
-                break;
+                break
             },
             _ => {
                 println!("Please login.");
