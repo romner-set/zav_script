@@ -2,6 +2,7 @@ use std::{time::Duration, thread, io::{self, Write}};
 use headless_chrome::{Browser, LaunchOptionsBuilder};
 use sysinputs::keyboard::{Key, Physical};
 
+const LOGIN: &str = "https://student.zav.cz/#!/login";
 const RESULTS: &str = "#views-placeholder > div:nth-child(3) > div.d-flex.h-100.flex-column.bg-white.border-top.border-primary.border-width-4 > div.zav-course-content > view4 > div.zav-fixed-height > lesson-panel > div > div > div.col-6.pr-5.d-flex.flex-wrap.align-content-start.h-100";
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
@@ -17,14 +18,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     let tab = browser.wait_for_initial_tab()?;
     tab.set_default_timeout(Duration::MAX);
 
-    println!("Opened, navigating to https://student.zav.cz/#!/login");
+    println!("Opened, navigating to {}", LOGIN);
     
-    tab.navigate_to("https://student.zav.cz/#!/login")?.wait_until_navigated()?;
+    tab.navigate_to(LOGIN)?.wait_until_navigated()?;
     println!("Waiting for login.");
 
     loop {
         match tab.wait_until_navigated()?.get_url().as_str() {
-            "https://student.zav.cz/#!/login" => (),
+            LOGIN => (),
             "https://student.zav.cz/#!/courses" => {
                 println!("Success, waiting for course selection.");
                 let input = tab.wait_for_element("div > text-input > div#textInput")?;
@@ -68,7 +69,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             },
             _ => {
                 println!("Please login.");
-                tab.navigate_to("https://student.zav.cz/#!/login")?;
+                tab.navigate_to(LOGIN)?;
             }
         }
     }
